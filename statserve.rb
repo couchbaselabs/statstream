@@ -3,7 +3,11 @@ require 'sinatra'
 require 'couchbase'
 require 'couchrest'
 require 'uri'
+require 'cgi'
 require 'uuid'
+require File.dirname(__FILE__) + '/vendor/queryparams/lib/queryparams.rb'
+
+# require "sinatra/reloader" if development?
 
 Couch = Couchbase.new("http://localhost:8091/pools/default")
 
@@ -23,11 +27,12 @@ views.each do |fname|
   design[:views][vname][stage] = File.read(fname)
 end
 
-ok = CouchRest.put "#{DBURL}/#{design['_id']}", design;
+Design_url = "#{DBURL}/#{design['_id']}"
+ok = CouchRest.put Design_url, design;
 
-puts "ddoc view #{ok.inspect}"
 
 view = Couch.design_docs#["stats"].daily_traffic
+puts "ddoc view #{view.inspect}"
 
 
 
@@ -65,10 +70,25 @@ get '/' do
   send_file File.join(settings.public_folder, 'index.html')
 end
 
-get '/view/*' do
-  puts params.inspect
+get '/js/*' do
+  send_file File.join(settings.public_folder, "js", params[:splat])
 end
 
 get '/Open-Web-Analytics/modules/base/js/owa.tracker-combined-min.js' do
   send_file File.join(settings.public_folder, 'owa.tracker-combined-min.js')
 end
+
+
+get '/view/:name' do
+  view_url = "#{Design_url}/_view/#{params[:name]}"
+  query = {}
+  params.each do |k, v|
+    next if %w{splat captures name}.include?(k.to_s)
+    query[k.to_s] = v
+  end
+  query['reduce'] ||= false
+  query = QueryParams.encode query
+  ok = CouchRest.get view_url + '?' + query;
+  JSON.dump(ok)
+end
+
