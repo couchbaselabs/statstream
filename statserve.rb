@@ -1,11 +1,11 @@
 require 'rubygems'
 require 'sinatra'
-require 'couchrest'
+require 'couchbase'
 require 'uri'
+require 'uuid'
 
-@couch = CouchRest.new 'http://localhost:5984'
-Db = @couch.database! "statserve"
-puts Db.inspect
+Couch = Couchbase.new("http://localhost:8091/pools/default")
+
 
 configure do
   set :port, 8888
@@ -23,8 +23,10 @@ def saveData params
     end
     doc[k] = field
   end  
-  r = Db.save_doc doc
-  r['id']
+  doc["server_timestamp"] = Time.now.utc
+  docid = UUID.generate
+  Couch[docid] = doc;
+  docid
 end
 
 post '/Open-Web-Analytics/log.php' do
