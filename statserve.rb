@@ -32,7 +32,7 @@ ok = CouchRest.put Design_url, design;
 
 
 view = Couch.design_docs#["stats"].daily_traffic
-puts "ddoc view #{view.inspect}"
+puts "ddoc #{ok}\nview #{view.inspect}"
 
 
 
@@ -86,7 +86,7 @@ get '/view/:name' do
     next if %w{splat captures name}.include?(k.to_s)
     query[k.to_s] = v
   end
-  query['reduce'] ||= false
+  query['stale'] ||= false
   query = QueryParams.encode query
   ok = CouchRest.get view_url + '?' + query;
   JSON.dump(ok)
