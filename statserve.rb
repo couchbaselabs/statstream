@@ -8,7 +8,8 @@ require 'uuid'
 Couch = Couchbase.new("http://localhost:8091/pools/default")
 
 # on startup update the design document
-
+DBURL = 'http://localhost:8092/default'
+# puts Db.inspect
 design = {
   "_id" => "_design/stats",
   :views => {}
@@ -22,13 +23,13 @@ views.each do |fname|
   design[:views][vname][stage] = File.read(fname)
 end
 
-Couch[design["_id"]] = design;
+ok = CouchRest.put "#{DBURL}/#{design['_id']}", design;
 
-r = Couch[design["_id"]]
+puts "ddoc view #{ok.inspect}"
 
 view = Couch.design_docs#["stats"].daily_traffic
 
-puts "ddoc view #{r.inspect}"
+
 
 configure do
   set :port, 8888
@@ -58,6 +59,14 @@ end
 
 get '/Open-Web-Analytics/log.php' do
   saveData params
+end
+
+get '/' do
+  send_file File.join(settings.public_folder, 'index.html')
+end
+
+get '/view/*' do
+  puts params.inspect
 end
 
 get '/Open-Web-Analytics/modules/base/js/owa.tracker-combined-min.js' do
