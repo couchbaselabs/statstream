@@ -38,21 +38,3 @@ end
 get '/Open-Web-Analytics/modules/base/js/owa.tracker-combined-min.js' do
   send_file File.join(settings.public_folder, 'owa.tracker-combined-min.js')
 end
-
-get '/statserve/:id' do
-  begin
-    puts "/statserve/#{params[:id]}"
-    result = JSON.parse(data)
-    %Q{
-<h1>#{result['title']}</h1>
-<p>We enjoyed this meal on #{result['date']}</p>
-<p>#{result['summary']}</p>
-<p>navigation and links to recipes would go here...</p>
-<pre>
-#{data}
-</pre>
-}
-  rescue RestClient::ResourceNotFound 
-    %Q{404 :(}
-  end
-end
