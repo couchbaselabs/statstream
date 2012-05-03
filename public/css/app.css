@@ -1,0 +1,14 @@
+#recent-events p {
+  background: red;
+  display:block;
+  width:2px;
+  float:left;
+}
+
+.clear {
+  clear:both;
+}
+
+body {
+  font-family:sans-serif;
+}

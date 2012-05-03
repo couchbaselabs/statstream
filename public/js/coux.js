@@ -7,7 +7,7 @@ function coux(opts, body) {
       dataType: 'json',
       contentType: 'application/json',
       success: function(data) {
-        console.log(data)
+        // console.log("resp", data)
         cb(false, data)
       },
       error: function(e) {

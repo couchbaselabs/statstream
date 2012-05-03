@@ -1,9 +1,20 @@
 <html>
-<title>Dashboard page</title>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>Dashboard page</title>
+  <link rel="stylesheet" href="css/app.css" type="text/css">
+</head>
+<body>
   <h1>The dashboard</h1>
   <p>Welcome to the dashboard.</p>
   <h2>Recent Events</h2>
-  <div id="recent-events"></div>
+  <div id="recent-events">
+  </div>
+  <h2>Cubism</h2>
+  <div id="cubism">
+  </div>
+  <br class='clear'/>
+  <p>Sweet</p>
   <h2>Daily Pageviews</h2>
   <div id="daily-pageviews"></div>
   <h2>Top Content Today</h2>
@@ -11,7 +22,9 @@
   <script src="js/jquery.js"></script>
   <script src="js/coux.js"></script>
   <script src="js/jquery.autoview.js"></script>
+  <script src="js/d3.v2.js"></script>
   <script src="js/mustache.js"></script>
+  <script src="js/cubism.js"></script>
   <script src="js/app.js"></script>
   <script id="keys-values" type="text/mustache">
     <p>Total: {{rows.length}}</p>
@@ -34,5 +47,5 @@
     </ul>
   </script>
   
-  
+</body>
 </html>
