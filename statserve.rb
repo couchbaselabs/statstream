@@ -78,7 +78,6 @@ get '/Open-Web-Analytics/modules/base/js/owa.tracker-combined-min.js' do
   send_file File.join(settings.public_folder, 'owa.tracker-combined-min.js')
 end
 
-
 get '/view/:name' do
   view_url = "#{Design_url}/_view/#{params[:name]}"
   query = {}
@@ -91,4 +90,3 @@ get '/view/:name' do
   ok = CouchRest.get view_url + '?' + query;
   JSON.dump(ok)
 end
-

@@ -16,7 +16,7 @@ $(function() {
     };
     
     var context = cubism.context()
-    .step(1e3)
+    .step(1e6)
     .size(1000);
 
     d3.select("#cubism").selectAll(".axis")
@@ -51,10 +51,9 @@ $(function() {
             return callback(err);
           }
           var bins = binRows(view.rows, start, step, function(k) {return k[1]});
-          console.log(bins)
           callback(null, bins);
         });
-        }, url.split('/').pop());
+        }, url);
     };
 
 
