@@ -88,18 +88,15 @@ $(function() {
         if (rowTime < start + step) {
           val += rows[i].value;
         } else if (rowTime > start + step) {
-          // console.log("val", val)
           vals.push(val);
           gap = rowTime - start + step;
           times = gap / step;
-          // console.log("times", times, start, gap, step, rows[i])
           for (j=0; j < times; j++) {
             vals.push(NaN) // nothing for that bin
           };
           val = rows[i].value;
           start += (step * (times+1));
         } else {
-          // console.log("val", val)
           vals.push(val);
           val = rows[i].value;
           start += step;
