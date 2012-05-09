@@ -1,18 +1,22 @@
 $(function() {
-  // get the view data for top urls
-  // print it to the screen
-  $('#daily-pageviews').autoview({
-    query : ["view", "daily_traffic", {group_level : 3}],
-    template : Mustache.compile($('#array-keys-values').html())
-  })
+  if (document.location.hash) {
+    var siteId = document.location.hash.replace("#",'');
+    $('h1').append($('<span> for site_id: </span>').append($('<span>').text(siteId)));
+  } else {
+    $('h1').text("Need a site id")
+    return;
+  }
   
-  coux(["view", "url_events", {group_level : 1}], function(err, view) {
+  
+  coux(["view", "url_events", {
+      group_level : 2,
+      startkey : [siteId],
+      endkey : [siteId, {}],
+    }], function(err, view) {
     view.rows = view.rows.sort(function(a, b) {return b.value - a.value});
-    $('#top-pages').html(Mustache.render($('#keys-values').html(), view));
-    
-    var top10 = [];
-    for (var i=0; i < 10; i++) {
-      top10.push(view.rows[i].key[0])
+    var top10 = [], n = Math.min(10, view.rows.length);
+    for (var i=0; i < n; i++) {
+      top10.push(view.rows[i].key[1])
     };
     
     var context = cubism.context()
@@ -43,32 +47,31 @@ $(function() {
       return context.metric(function(start, stop, step, callback) {
         start = (+start)/1000, stop = (+stop)/1000, step = (+step)/1000;
         coux(["view", "url_events", {
-          startkey : [url, start],
-          endkey : [url, stop],
-          group_level : 2
+          startkey : [siteId, url, start],
+          endkey : [siteId, url, stop],
+          group_level : 3
         }], function(err, view) {
           if (err) {
             return callback(err);
           }
-          var bins = binRows(view.rows, start, step, function(k) {return k[1]});
+          var bins = binRows(view.rows, start, step, function(k) {return k[2]});
           callback(null, bins);
         });
         }, url);
     };
 
-
     function allEvents(name) {
       return context.metric(function(start, stop, step, callback) {
         start = (+start)/1000, stop = (+stop)/1000, step = (+step)/1000;
         coux(["view", "events", {
-          startkey : start,
-          endkey : stop,
+          startkey : [siteId, start],
+          endkey : [siteId, stop],
           group : true
         }], function(err, view) {
           if (err) {
             return callback(err);
           }
-          callback(null, binRows(view.rows, start, step));
+          callback(null, binRows(view.rows, start, step, function(k) {return k[1]}));
         });
         }, name);
       }

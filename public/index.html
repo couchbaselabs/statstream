@@ -5,43 +5,15 @@
   <link rel="stylesheet" href="css/app.css" type="text/css">
 </head>
 <body>
-  <h1>The dashboard</h1>
-  <p>Welcome to the dashboard.</p>
-  <h2>Recent Events</h2>
+  <h1>Traffic dashboard</h1>
   <div id="cubism">
   </div>
   <br class='clear'/>
-  <h2>Daily Pageviews</h2>
-  <div id="daily-pageviews"></div>
-  <h2>Top Content Today</h2>
-  <div id="top-pages"></div>
+
   <script src="js/jquery.js"></script>
   <script src="js/coux.js"></script>
-  <script src="js/jquery.autoview.js"></script>
   <script src="js/d3.v2.js"></script>
-  <script src="js/mustache.js"></script>
   <script src="js/cubism.js"></script>
-  <script src="js/app.js"></script>
-  <script id="keys-values" type="text/mustache">
-    <p>Total: {{rows.length}}</p>
-    <ul>
-    {{#rows}}
-      <li><em>{{value}}</em> <strong>{{key}}</strong></li>
-    {{/rows}}
-    </ul>
-  </script>
-  <script id="array-keys-values" type="text/mustache">
-    <p>Total: {{rows.length}}</p>
-    <ul>
-    {{#rows}}
-      <li><em>{{value}}</em> <strong>
-      {{#key}}
-        {{.}},
-      {{/key}}
-      </strong></li>
-    {{/rows}}
-    </ul>
-  </script>
-  
+  <script src="js/app.js"></script>  
 </body>
 </html>
