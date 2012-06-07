@@ -4,6 +4,8 @@ To run this:
 * modify statserve.rb to know where that cluster is
 * on the site you want to track, add this junk (note you may have to edit the localhost:8888 bit):
 
+This is the HTML you embed:
+
     <!-- Start Open Web Analytics Tracker -->
     <script type="text/javascript">
     //<![CDATA[
